@@ -1,0 +1,21 @@
+version: "3.9" # version of docker compose syntax
+
+services: # docker compose file consists of one or more services  as needed for applicaton 
+  app: # name of our service, this is the service that is going to run our dockerfile
+    build: # tells that we are going to build docker file in current directory
+      context: .
+      args: 
+        - DEV=true
+    # port mapping, maps the port 8000 on our local machine to port 8000 inside of the docker container
+    ports: 
+      - "8000:8000"
+    # volumes are way of mapping directories from our system into the docker container.
+    # The reason we add this is because we want the updates that we make to our
+    # code in our local project to be reflected in the running container in real time.
+    volumes: 
+      - ./app:/app
+    # command to run the service, We can override this command when we run docker compose run, 
+    # which we're going to be doing a lotof in this course. However, by default, 
+    #if we don't specify a command, it's going to use the command we define inside our Docker compose file.
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
